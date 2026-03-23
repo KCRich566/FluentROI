@@ -37,3 +37,68 @@ The core ROI functionality is also available as a **reusable library/SDK**, enab
 ---
 
 ## 🧱 Project Structure
+
+```text
+FluentROI/
+├─ FluentROI.sln
+├─ src/
+│  └─ FluentROI.Core/
+│     ├─ CoordinateMapper.cs
+│     ├─ RoiAnchor.cs
+│     ├─ RoiImageExporter.cs
+│     ├─ RoiItem.cs
+│     ├─ RoiManager.cs
+│     └─ RoiRect.cs
+├─ tests/
+│  └─ FluentROI.Core.Tests/
+└─ README.md
+```
+
+`FluentROI.Core` is a foundational SDK for ROI logic and can be reused by WinUI, WPF, Avalonia, MAUI, or backend services.
+
+---
+
+## 🚀 Quick Start (SDK)
+
+1. Open `FluentROI.sln` in Visual Studio 2022 or newer.
+2. Build the `FluentROI.Core` project.
+3. Reference `FluentROI.Core` from your UI application.
+
+### Example
+
+```csharp
+using FluentROI.Core;
+
+var manager = new RoiManager(minWidth: 12, minHeight: 12);
+var roi = manager.Add(new RoiRect(100, 120, 240, 160), "Part-A");
+
+manager.Select(roi.Id);
+manager.MoveSelected(dx: 8, dy: -4);
+manager.Resize(roi.Id, RoiAnchor.BottomRight, dx: 20, dy: 15);
+
+var imageRect = CoordinateMapper.CanvasToImage(
+    canvasRect: roi.Bounds,
+    canvasOffsetX: 20,
+    canvasOffsetY: 16,
+    zoomScale: 1.5f);
+```
+
+---
+
+## 📌 Next Steps
+
+- Add `FluentROI.WinUI` front-end project with Fluent Design components.
+- Connect pointer/mouse events to `RoiManager`.
+- Add undo/redo command stack.
+- Add unit tests for resize anchors and coordinate conversion.
+
+
+---
+
+## ✅ Testing
+
+```bash
+dotnet test FluentROI.sln
+```
+
+The test project validates ROI move/resize behavior and coordinate mapping round-trip conversions.
